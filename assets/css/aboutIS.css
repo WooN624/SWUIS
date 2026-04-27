@@ -1,0 +1,199 @@
+:root {
+    --swu-red: #E00A19;
+    --swu-red-light: #ffebec;
+    --swu-dark: #2d3436;
+    --swu-grey: #636e72;
+    --white: #ffffff;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: #f0f2f5;
+    background-image: radial-gradient(#e0e0e0 1px, transparent 1px);
+    background-size: 30px 30px; /* ลายจุดมินิมอล */
+    color: var(--swu-dark);
+    line-height: 1.7;
+}
+
+.main-wrapper {
+    padding: 40px 20px;
+}
+
+.content-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--white);
+    padding: 60px 50px;
+    border-radius: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Header */
+.header-section {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.swu-badge {
+    display: inline-block;
+    background: var(--swu-red);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-family: 'Prompt', sans-serif;
+    font-size: 2.5rem;
+    color: var(--swu-dark);
+    margin-bottom: 10px;
+}
+
+.header-line {
+    width: 60px;
+    height: 4px;
+    background: var(--swu-red);
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+/* Section Cards */
+.card-section {
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-family: 'Prompt', sans-serif;
+    font-size: 1.4rem;
+    color: var(--swu-red);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.highlight-box {
+    background: var(--swu-red-light);
+    padding: 25px;
+    border-radius: 20px;
+    border-left: 5px solid var(--swu-red);
+    font-weight: 500;
+}
+
+/* Badges & Lists */
+.badge {
+    background: #dfe6e9;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--swu-red);
+    font-weight: 600;
+}
+
+.styled-list {
+    list-style: none;
+}
+
+.styled-list li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.styled-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--swu-red);
+    font-weight: bold;
+}
+
+/* Grid Layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.info-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    background: var(--white);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.info-card i {
+    font-size: 1.5rem;
+    color: var(--swu-red);
+    margin-bottom: 10px;
+}
+
+.info-card h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+/* Career Section */
+.career-section {
+    background: var(--swu-dark);
+    color: white;
+    padding: 40px;
+    border-radius: 30px;
+    text-align: center;
+}
+
+.career-section h2 {
+    color: white;
+    justify-content: center;
+}
+
+.career-section p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .content-container { padding: 30px 20px; }
+    .grid-container { grid-template-columns: 1fr; }
+    h1 { font-size: 1.8rem; }
+}
+/* ===== RESPONSIVE ADDITIONS ===== */
+@media (max-width: 600px) {
+    .main-wrapper { padding: 20px 10px; }
+    .content-container { padding: 25px 15px; border-radius: 20px; }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.1rem; }
+    .grid-container { grid-template-columns: 1fr; gap: 15px; }
+    .career-section { padding: 25px 20px; border-radius: 20px; }
+    .career-section p { font-size: 0.95rem; }
+    .highlight-box { padding: 15px; }
+}

@@ -1,0 +1,313 @@
+/* --- 1. การตั้งค่าพื้นฐานและตัวแปร --- */
+:root {
+    --swu-red: #8a0000;
+    --swu-dark: #4a0000;
+    --glass: rgba(255, 255, 255, 0.85);
+    --text-main: #333;
+    --text-muted: #777;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { 
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--bg-color);
+    background-image: radial-gradient(var(--swu-red) 0.9px, transparent 0.9px);
+    background-size: 30px 30px; /* ลายจุดพื้นหลังน่ารักๆ */
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+/* ค้นหาส่วน .main-universe ใน curriculum.css แล้วเพิ่ม padding-top */
+.main-universe {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 100px 20px 80px 20px; /* เปลี่ยนจาก 0 เป็น 100px (มากกว่าความสูง header) */
+}
+
+/* --- 2. ส่วนหัวเรื่องใหม่ (Premium Hero Section) --- */
+.curriculum-hero {
+    text-align: center;
+    padding: 80px 0 60px 0;
+    position: relative;
+}
+
+.swu-badge {
+    display: inline-block;
+    background: var(--swu-red);
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-family: 'Prompt';
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(138, 0, 0, 0.2);
+    text-transform: uppercase;
+}
+
+.hero-title {
+    font-family: 'Prompt', sans-serif;
+    font-size: 3.8rem;
+    line-height: 1.1;
+    margin-bottom: 25px;
+}
+
+.hero-title .light {
+    font-weight: 300;
+    color: var(--text-main);
+}
+
+.hero-title .bold {
+    font-weight: 800;
+    background: linear-gradient(to right, #8a0000, #ff4d4d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    margin-top: 5px;
+}
+
+.hero-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-family: 'Sarabun';
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.hero-info i {
+    color: var(--swu-red);
+    margin-right: 8px;
+}
+
+.info-divider {
+    color: #ddd;
+    font-weight: 300;
+}
+
+.hero-line {
+    width: 100px;
+    height: 6px;
+    background: var(--swu-red);
+    margin: 45px auto 0;
+    border-radius: 10px;
+}
+
+/* --- 3. ตารางแผนการศึกษา (Year Cards) --- */
+.timeline-container {
+    margin-top: 30px;
+}
+
+.year-card {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 30px;
+    margin-bottom: 50px;
+    display: flex;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+.year-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(138, 0, 0, 0.12);
+    border-color: rgba(138, 0, 0, 0.2);
+}
+
+.year-side {
+    background: var(--swu-red);
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.year-side span {
+    transform: rotate(-90deg);
+    color: #fff;
+    font-family: 'Prompt';
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 4px;
+    font-size: 1.2rem;
+    display: block;
+}
+
+.term-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+}
+
+.term-pane {
+    padding: 40px;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.term-pane:last-child {
+    border-right: none;
+}
+
+.term-pane h3 {
+    font-family: 'Prompt';
+    color: var(--swu-red);
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.course-set {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #999;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+ul {
+    list-style: none;
+    margin-bottom: 25px;
+}
+
+ul li {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.5;
+    color: #444;
+}
+
+ul li small {
+    background: #fff;
+    color: var(--swu-red);
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-right: 12px;
+    border: 1px solid #eee;
+    min-width: 75px;
+    text-align: center;
+    font-size: 0.8rem;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.03);
+}
+
+/* สไตล์วิชาเลือกเสรี */
+.free-elective li {
+    color: #d35400;
+    font-style: italic;
+}
+
+/* --- 4. ตกแต่งพิเศษสำหรับชั้นปีที่ 4 --- */
+.last-year .year-side {
+    background: #2d3436;
+}
+
+.special-term {
+    background: linear-gradient(135deg, var(--swu-red) 0%, #4a0000 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.final-goal {
+    padding: 20px;
+}
+
+.final-goal i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #fff;
+    display: block;
+}
+
+.final-goal h3 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.final-goal p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.options-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.options-tags span {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: 0.3s;
+}
+
+.options-tags span:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- 5. Responsive Design --- */
+@media (max-width: 992px) {
+    .hero-title { font-size: 3rem; }
+}
+
+@media (max-width: 850px) {
+    .curriculum-hero { padding: 40px 0; }
+    .hero-title { font-size: 2.5rem; }
+    .hero-info { flex-direction: column; gap: 8px; }
+    .info-divider { display: none; }
+    
+    .term-grid { grid-template-columns: 1fr; }
+    
+    .year-card { flex-direction: column; border-radius: 20px; }
+    .year-side { width: 100%; height: 50px; }
+    .year-side span { transform: rotate(0); letter-spacing: 2px; }
+    
+    .term-pane { 
+        padding: 30px; 
+        border-right: none; 
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
+    }
+    
+    .term-pane:last-child { border-bottom: none; }
+}
+
+@media (max-width: 480px) {
+    .hero-title { font-size: 2rem; }
+    .swu-badge { font-size: 0.75rem; padding: 5px 15px; }
+    .term-pane { padding: 20px; }
+    ul li { font-size: 0.9rem; }
+}
+
+/* ===== RESPONSIVE ADDITIONS ===== */
+@media (max-width: 480px) {
+    .main-universe  { padding: 80px 10px 40px; }
+    .curriculum-hero { padding: 30px 0; }
+    .hero-title     { font-size: 1.6rem; }
+    .term-pane      { padding: 15px; }
+    ul li           { font-size: 0.85rem; }
+    ul li small     { min-width: 60px; font-size: 0.7rem; padding: 2px 5px; }
+    .year-side      { height: 40px; }
+    .year-side span { font-size: 0.9rem; letter-spacing: 1px; }
+    .options-tags span { font-size: 0.75rem; padding: 4px 10px; }
+}

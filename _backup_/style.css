@@ -1,0 +1,650 @@
+/* 1. Reset & Global Styles */
+* {
+    box-sizing: border-box;
+}
+ 
+:root {
+    --swu-red: #aa182c;
+    --swu-dark-red: #881322;
+    --text-color: #4a4a4a;
+    --light-gray: #f8f8f8;
+    --white: #ffffff;
+}
+ 
+body {
+    font-family: 'Sarabun', 'Prompt', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+ 
+/* 2. Header & Navigation */
+.header {
+    width: 100%;       /* มั่นใจว่ากว้างเต็มจอ */
+    position: fixed;   /* หรือ sticky ตามเดิม */
+    top: 0;            /* บังคับชิดขอบบน */
+    left: 0;           /* บังคับชิดขอบซ้าย */
+    right: 0;          /* บังคับชิดขอบขวา */
+    z-index: 1000;
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.container-nav {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10 20px;
+}
+ 
+/* Logo Section */
+.logo-group {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+ 
+.logo-img {
+    height: 60px;
+    margin-right: 12px;
+}
+ 
+.logo-text {
+    border-left: 2px solid #ccc;
+    padding-left: 12px;
+}
+ 
+.logo-text h1 {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.2;
+}
+ 
+.logo-text p {
+    color: #777;
+    font-size: 0.8rem;
+    margin: 0;
+}
+ 
+/* Nav Links */
+nav {
+    margin-left: 20px;
+    margin-right: auto;
+}
+ 
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 5px;
+}
+ 
+.nav-links > li {
+    position: relative;
+    padding: 10px 15px;
+}
+ 
+.nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+ 
+.nav-links > li > a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--swu-red);
+    transition: width 0.3s ease;
+}
+ 
+.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover { color: var(--swu-red); }
+ 
+/* Dropdown */
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background-color: var(--white);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 10px 0;
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all 0.3s ease;
+}
+ 
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+ 
+.dropdown-content li a {
+    padding: 10px 20px;
+    display: block;
+    font-size: 0.9rem;
+}
+ 
+.dropdown-content li a:hover {
+    background-color: var(--light-gray);
+    color: var(--swu-red);
+}
+
+.dropdown.active .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+ 
+/* Login Button */
+.login-btn-circle {
+    display: inline-block;
+    background-color: var(--swu-red);
+    color: white !important;
+    padding: 8px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 2px solid var(--swu-red);
+}
+ 
+.login-btn-circle:hover {
+    background-color: var(--white);
+    color: var(--swu-red) !important;
+}
+ 
+/* --- Login Popup Section --- */
+
+/* 1. พื้นหลังโปร่งแสง */
+.login-overlay {
+    display: none; 
+    position: fixed;
+    z-index: 2000; /* ให้สูงกว่า Modal ตัวอื่น */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px); /* ทำพื้นหลังเบลอให้ดูทันสมัย */
+}
+
+/* 2. กล่องหน้าต่างขาว */
+.login-window {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 40px;
+    border-top: 5px solid #9e1b32; /* เพิ่มเส้นสีแดงเข้มสไตล์ มศว */
+    border-radius: 12px;
+    width: 320px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+/* 3. ช่องกรอกข้อมูล */
+.login-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; /* สำคัญ: ป้องกันช่องกรอกเลยขอบ */
+}
+
+/* 4. ปุ่มกด */
+.login-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #9e1b32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.login-submit-btn:hover {
+    background-color: #7a1426;
+}
+
+/* 5. ปุ่มปิด (X) */
+.login-close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    color: #888;
+    cursor: pointer;
+}
+
+.login-close:hover { color: #000; }
+
+/* ตกแต่งส่วนfaq */
+/* --- Career Section Styles --- */
+.career-section {
+    margin: 60px 0;
+    text-align: center;
+}
+
+.section-title h2 {
+    font-family: 'Prompt';
+    font-size: 2rem;
+    color: var(--swu-red);
+    margin-bottom: 40px;
+}
+
+.career-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.career-item {
+    background: #fff;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+    border: 1px solid #f0f0f0;
+    transition: 0.3s;
+}
+
+.career-item:hover {
+    transform: scale(1.05);
+    border-color: var(--swu-red);
+}
+
+.career-item i {
+    font-size: 2.5rem;
+    color: var(--swu-red);
+    margin-bottom: 15px;
+}
+
+.career-item h4 {
+    font-family: 'Prompt';
+    margin-bottom: 10px;
+}
+
+.career-item p {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+
+/* --- Skill Stack Styles --- */
+.skill-stack {
+    margin-bottom: 60px;
+}
+
+.stack-card {
+    background: linear-gradient(135deg, #d0d0d0 0%, #fefefe 100%);
+    color: #858383;
+    padding: 40px;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.stack-card h3 {
+    font-family: 'Prompt';
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.tag {
+    background: rgba(129, 128, 128, 0.1);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(139, 139, 139, 0.288);
+    transition: 0.3s;
+}
+
+.tag:hover {
+    background: var(--swu-red);
+    border-color: var(--swu-red);
+}
+
+.footer {
+    width: 100vw !important; /* บังคับกว้างเท่าขนาดหน้าจอฝั่ง Viewport */
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw !important; /* เทคนิคดึงให้แถบแผ่ออกไปนอก container แม่ */
+    margin-right: -50vw !important;
+    
+    padding: 60px 0;
+    background-color: #ffffff !important;
+    text-align: center;
+    border-top: 5px solid #aa182c;
+    box-sizing: border-box;
+}
+/* --- ไอคอน --- */
+.contact-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #8a0000 0%, #ff4d4d 100%); /* ไล่สีไอคอน */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(138, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.contact-item:hover .contact-icon {
+    transform: rotate(-10deg) scale(1.1); /* หมุน+ขยายตอน Hover */
+}
+
+/* --- รายละเอียด --- */
+.contact-detail h4 {
+    font-family: 'Prompt', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.contact-detail p {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+
+/* --- Social Media Links --- */
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.social-links a {
+    width: 45px;
+    height: 45px;
+    background: #fff;
+    border: 1px solid #eee;
+    color: #8a0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* วงกลม */
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+/* Hover โซเชียล: พื้นหลังแดง + ไอคอนขาว + หมุน */
+.social-links a:hover {
+    background: #8a0000;
+    color: #fff;
+    transform: translateY(-5px) rotate(360deg);
+    box-shadow: 0 5px 15px rgba(138, 0, 0, 0.3);
+}
+
+/* --- ส่วนท้ายสุด (Copyright) --- */
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-top: 0px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.85rem;
+    color: #bbb;
+    position: relative;
+    z-index: 1;
+}
+   
+
+@media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 20px; } /* เรียงแนวตั้ง */
+    .contact-section { padding: 60px 25px 30px 25px; border-radius: 30px; }
+    .contact-header h2 { font-size: 2rem; }
+    .contact-item { padding: 30px 20px; }
+}
+
+@media (max-width: 480px) {
+    .contact-header h2 { font-size: 1.8rem; }
+    .contact-icon { width: 60px; height: 60px; font-size: 1.5rem; }
+}
+
+
+html {
+    overflow-x: hidden;
+}
+
+
+.btn-modern {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #720d00;
+    color: rgb(246, 243, 243);
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เปลี่ยน Transition ให้มีความเด้ง (Spring) */
+    box-shadow: 0 4px 15px rgba(101, 108, 114, 0.3);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+/* เมื่อเอาเมาส์ไปวาง: ปุ่มลอย */
+.btn-modern:hover {
+    background-color: #8a1100;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(101, 108, 114, 0.4);
+}
+
+/* เมื่อคลิก: ปุ่มยุบและหดตัวเล็กน้อย */
+.btn-modern:active {
+    transform: translateY(1px) scale(0.97); /* ยุบลงและหดตัว 3% เพื่อความสมจริง */
+    box-shadow: 0 2px 8px rgba(101, 108, 114, 0.3);
+    transition: all 0.1s; /* จังหวะคลิกต้องเร็ว (0.1s) จะรู้สึกตอบสนองดีกว่า */
+}
+
+/* contact */
+/* ส่วนติดต่อ contact */
+
+.contact-section {
+    margin-top: 80px;
+    background: #fff;
+    border-radius: 40px; /* ขอบโค้งมนดูทันสมัย */
+    padding: 80px 40px 40px 40px;
+    box-shadow: 0 -15px 50px rgba(0,0,0,0.03); /* เงาด้านบนจางๆ */
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden; /* ป้องกันแสงรั่ว */
+    transition: transform 0.4s ease;
+}
+
+/* แถบสีแดงวิ่งด้านบนสุด (Neon Line) */
+.contact-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, #8a0000, #ff4d4d, #8a0000);
+    background-size: 200% auto;
+    animation: neonFlow 4s linear infinite; /* แอนิเมชันสีวิ่ง */
+}
+
+@keyframes neonFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* แสง Glow จางๆ ด้านหลัง */
+.contact-section::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(138, 0, 0, 0.05);
+    filter: blur(50px);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.contact-container {
+    position: relative;
+    z-index: 1; /* อยู่เหนือแสง Glow */
+}
+
+/* --- หัวเรื่อง Contact --- */
+.contact-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.contact-header h2 {
+    font-family: 'Prompt', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #333, #8a0000); /* ไล่สีหัวเรื่อง */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.contact-header p {
+    font-family: 'Sarabun', sans-serif;
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+/* --- Grid จัดองค์ประกอบ 3 ช่อง --- */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+/* --- Item แต่ละช่อง --- */
+.contact-item {
+    display: flex;
+    flex-direction: column; /* แนวตั้ง */
+    align-items: center; /* กึ่งกลาง */
+    text-align: center;
+    padding: 40px 30px;
+    border-radius: 25px;
+    background: #fdfdfd;
+    border: 1px solid #f0f0f0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    position: relative;
+}
+
+/* ลูกเล่น Hover: ลอยขึ้น + เงาสีแดง + ขอบแดง */
+.contact-item:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(138, 0, 0, 0.1);
+    border-color: rgba(138, 0, 0, 0.3);
+    background: #fff;
+}
+
+/* --- ไอคอน --- */
+.contact-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #8a0000 0%, #ff4d4d 100%); /* ไล่สีไอคอน */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(138, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.contact-item:hover .contact-icon {
+    transform: rotate(-10deg) scale(1.1); /* หมุน+ขยายตอน Hover */
+}
+
+/* --- รายละเอียด --- */
+.contact-detail h4 {
+    font-family: 'Prompt', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.contact-detail p {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+
+/* --- Social Media Links --- */
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.social-links a {
+    width: 45px;
+    height: 45px;
+    background: #fff;
+    border: 1px solid #eee;
+    color: #8a0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* วงกลม */
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+/* Hover โซเชียล: พื้นหลังแดง + ไอคอนขาว + หมุน */
+.social-links a:hover {
+    background: #8a0000;
+    color: #fff;
+    transform: translateY(-5px) rotate(360deg);
+    box-shadow: 0 5px 15px rgba(138, 0, 0, 0.3);
+}
+
+.section-title-news {
+    font-family: 'Prompt', sans-serif;
+    font-size: 2rem;       /* ปรับขนาดตามความเหมาะสม */
+    color: #333;           /* สีเดียวกับข่าวประชาสัมพันธ์ */
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 10px;
+}
