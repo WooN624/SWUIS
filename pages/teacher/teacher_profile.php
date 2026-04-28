@@ -1,13 +1,13 @@
 <?php
 /**
- * student_profile.php — หน้าข้อมูลส่วนตัวนิสิต
+ * teacher_profile.php — หน้าข้อมูลส่วนตัวอาจารย์
  */
 require_once '../../includes/auth.php';
 require_once '../../includes/db_connect.php';
 
-require_role('student', 'login.php');
+require_role('teacher', 'login.php');
 
-$stdid = $_SESSION['user_id'];
+$tchID = $_SESSION['user_id'];
 $msg = '';
 
 // เปลี่ยนรหัสผ่าน
@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     $new  = $_POST['new_pass']     ?? '';
     $conf = $_POST['confirm_pass'] ?? '';
 
-    $stmtP = $conn->prepare("SELECT password FROM student WHERE stdid = ?");
-    $stmtP->execute([$stdid]);
+    $stmtP = $conn->prepare("SELECT password FROM teacher WHERE tchID = ?");
+    $stmtP->execute([$tchID]);
     $currentPass = $stmtP->fetchColumn();
 
     if ($old !== $currentPass && !password_verify($old, $currentPass)) {
@@ -28,26 +28,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
         $msg = "<div class='alert alert-danger'><i class='fas fa-times-circle me-2'></i>รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร</div>";
     } else {
         $hashed = password_hash($new, PASSWORD_DEFAULT);
-        $stmtU = $conn->prepare("UPDATE student SET password = ? WHERE stdid = ?");
-        $stmtU->execute([$hashed, $stdid]);
+        $stmtU = $conn->prepare("UPDATE teacher SET password = ? WHERE tchID = ?");
+        $stmtU->execute([$hashed, $tchID]);
         $msg = "<div class='alert alert-success'><i class='fas fa-check-circle me-2'></i>เปลี่ยนรหัสผ่านเรียบร้อยแล้ว</div>";
     }
 }
 
-$stmt = $conn->prepare("SELECT * FROM student WHERE stdid = ?");
-$stmt->execute([$stdid]);
-$student = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt = $conn->prepare("SELECT * FROM teacher WHERE tchID = ?");
+$stmt->execute([$tchID]);
+$teacher = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// นิสิตที่อยู่ในความดูแล
 $stmt2 = $conn->prepare("
-    SELECT r.*, COALESCE(r.company_name, c.companyname) AS companyname, c.address AS company_address, c.email AS company_email, t.tchname
+    SELECT r.*, s.stdname, s.email AS student_email,
+           COALESCE(r.company_name, c.companyname) AS companyname
     FROM internship_request r
+    LEFT JOIN student s ON r.stdid = s.stdid
     LEFT JOIN company c ON r.companyid = c.companyid
-    LEFT JOIN teacher t ON r.tchID = t.tchID
-    WHERE r.stdid = ?
+    WHERE r.tchID = ?
     ORDER BY r.requestid DESC
 ");
-$stmt2->execute([$stdid]);
-$requests = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+$stmt2->execute([$tchID]);
+$students = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
 $statusMap = [
     'กำลังดำเนินการ' => ['class'=>'status-1','icon'=>'fa-paper-plane'],
@@ -73,7 +75,7 @@ $statusMap = [
         .profile-hero {
             background: linear-gradient(135deg, var(--swu-dark-red) 0%, var(--swu-red) 100%);
             padding: 2.5rem 0 0; border-radius: 0 0 2.5rem 2.5rem;
-            margin-bottom: 1.5rem; position: relative; z-index: 1;
+            margin-bottom: 1.5rem;
         }
         .avatar-circle {
             width:80px; height:80px; background:rgba(255,255,255,0.2);
@@ -83,7 +85,7 @@ $statusMap = [
         }
         .hero-name { font-size:1.4rem; font-weight:700; color:white; margin:0; }
         .hero-id   { font-size:0.85rem; color:rgba(255,255,255,0.75); margin:0.25rem 0 0; }
-        .hero-tabs { display:flex; justify-content:center; gap:0; margin-top:1.5rem; }
+        .hero-tabs { display:flex; justify-content:center; margin-top:1.5rem; }
         .hero-tab {
             padding:0.75rem 1.75rem; border:none; background:transparent;
             color:rgba(255,255,255,0.65); font-family:'Prompt',sans-serif;
@@ -95,19 +97,15 @@ $statusMap = [
         .modern-container { max-width:860px; margin:0 auto; padding:0 1.25rem; }
         .tab-pane { display:none; animation:fadeIn 0.3s ease; }
         .tab-pane.active { display:block; }
-        .info-card { background:var(--card); border-radius:1.5rem; box-shadow:0 20px 40px -15px rgba(0,0,0,0.07); padding:2rem; margin-bottom:1.5rem; }
+        .info-card, .pass-card { background:var(--card); border-radius:1.5rem; box-shadow:0 20px 40px -15px rgba(0,0,0,0.07); padding:2rem; margin-bottom:1.5rem; }
         .section-title { font-size:0.95rem; font-weight:700; color:var(--text); margin-bottom:1.25rem; display:flex; align-items:center; gap:0.5rem; }
         .section-title i { color:var(--swu-red); }
         .info-row { display:flex; align-items:flex-start; padding:0.7rem 0; border-bottom:1px solid #f1f5f9; }
         .info-row:last-child { border-bottom:none; }
         .info-label { width:140px; font-size:0.82rem; color:var(--muted); flex-shrink:0; padding-top:1px; }
-        .info-value { font-size:0.92rem; font-weight:500; color:var(--text); }
+        .info-value { font-size:0.92rem; font-weight:500; }
         .req-card { border:1px solid #f1f5f9; border-radius:1rem; padding:1.25rem 1.5rem; margin-bottom:1rem; transition:box-shadow 0.2s; }
         .req-card:hover { box-shadow:0 8px 20px -8px rgba(0,0,0,0.1); }
-        .req-company  { font-weight:600; font-size:1rem; margin-bottom:0.2rem; }
-        .req-position { font-size:0.85rem; color:var(--muted); margin-bottom:0.65rem; }
-        .req-meta { font-size:0.82rem; color:var(--muted); display:flex; gap:1.25rem; flex-wrap:wrap; }
-        .req-meta i { color:var(--swu-red); margin-right:3px; }
         .status-badge { display:inline-flex; align-items:center; gap:0.4rem; padding:0.3rem 0.85rem; border-radius:50px; font-size:0.8rem; font-weight:600; }
         .status-1 { background:#eef2ff; color:#4338ca; border:1px solid #e0e7ff; }
         .status-2 { background:#fffbeb; color:#b45309; border:1px solid #fef3c7; }
@@ -116,12 +114,6 @@ $statusMap = [
         .status-9 { background:#fef2f2; color:#b91c1c; border:1px solid #fee2e2; }
         .empty-box { text-align:center; padding:3rem 1rem; color:var(--muted); }
         .empty-box i { font-size:2.5rem; margin-bottom:0.75rem; display:block; color:#cbd5e1; }
-        .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:0.75rem; margin-bottom:1.5rem; }
-        .stat-box { background:var(--card); border-radius:1rem; padding:1rem; text-align:center; box-shadow:0 4px 12px -4px rgba(0,0,0,0.05); }
-        .stat-num { font-size:1.6rem; font-weight:700; }
-        .stat-label { font-size:0.75rem; color:var(--muted); margin-top:0.15rem; }
-        /* Password form */
-        .pass-card { background:var(--card); border-radius:1.5rem; box-shadow:0 20px 40px -15px rgba(0,0,0,0.07); padding:2rem; margin-bottom:1.5rem; }
         .form-control:focus { border-color:var(--swu-red); box-shadow:0 0 0 0.2rem rgba(200,16,46,0.15); }
         .btn-swu { background:linear-gradient(135deg,var(--swu-dark-red),var(--swu-red)); color:white; border:none; border-radius:0.75rem; padding:0.6rem 1.5rem; font-family:'Prompt',sans-serif; font-weight:600; }
         .btn-swu:hover { opacity:0.9; color:white; }
@@ -134,20 +126,18 @@ $statusMap = [
 
 <div class="profile-hero">
     <div class="text-center px-3">
-        <div class="avatar-circle"><i class="fas fa-user-graduate"></i></div>
-        <h1 class="hero-name"><?= htmlspecialchars($student['stdname'] ?? '-') ?></h1>
-        <p class="hero-id"><i class="fas fa-id-card me-1"></i><?= htmlspecialchars($student['stdid'] ?? '') ?></p>
+        <div class="avatar-circle"><i class="fas fa-chalkboard-teacher"></i></div>
+        <h1 class="hero-name"><?= htmlspecialchars($teacher['tchname'] ?? '-') ?></h1>
+        <p class="hero-id"><i class="fas fa-id-badge me-1"></i>อาจารย์ที่ปรึกษา</p>
     </div>
     <div class="hero-tabs">
         <button class="hero-tab active" onclick="switchTab('profile', this)">
             <i class="fas fa-user"></i> ข้อมูลส่วนตัว
         </button>
-        <button class="hero-tab" onclick="switchTab('internship', this)">
-            <i class="fas fa-briefcase"></i> ประวัติฝึกงาน
-            <?php if (count($requests)): ?>
-            <span style="background:rgba(255,255,255,0.3);padding:0 6px;border-radius:50px;font-size:0.75rem;">
-                <?= count($requests) ?>
-            </span>
+        <button class="hero-tab" onclick="switchTab('students', this)">
+            <i class="fas fa-users"></i> นิสิตในความดูแล
+            <?php if (count($students)): ?>
+            <span style="background:rgba(255,255,255,0.3);padding:0 6px;border-radius:50px;font-size:0.75rem;"><?= count($students) ?></span>
             <?php endif; ?>
         </button>
         <button class="hero-tab" onclick="switchTab('password', this)">
@@ -163,63 +153,52 @@ $statusMap = [
         <div class="info-card">
             <p class="section-title"><i class="fas fa-id-card"></i> ข้อมูลส่วนตัว</p>
             <div class="info-row">
-                <span class="info-label">รหัสนิสิต</span>
-                <span class="info-value"><?= htmlspecialchars($student['stdid'] ?? '-') ?></span>
+                <span class="info-label">รหัสอาจารย์</span>
+                <span class="info-value"><?= htmlspecialchars($teacher['tchID'] ?? '-') ?></span>
             </div>
             <div class="info-row">
                 <span class="info-label">ชื่อ-นามสกุล</span>
-                <span class="info-value"><?= htmlspecialchars($student['stdname'] ?? '-') ?></span>
+                <span class="info-value"><?= htmlspecialchars($teacher['tchname'] ?? '-') ?></span>
             </div>
             <div class="info-row">
                 <span class="info-label">อีเมล</span>
-                <span class="info-value"><?= htmlspecialchars($student['email'] ?? '-') ?></span>
+                <span class="info-value"><?= htmlspecialchars($teacher['email'] ?? '-') ?></span>
             </div>
             <div class="info-row">
                 <span class="info-label">เบอร์โทร</span>
-                <span class="info-value"><?= htmlspecialchars($student['phone'] ?? '-') ?></span>
+                <span class="info-value"><?= htmlspecialchars($teacher['phone'] ?? '-') ?></span>
             </div>
         </div>
     </div>
 
-    <!-- Tab: ประวัติฝึกงาน -->
-    <div id="tab-internship" class="tab-pane">
-        <?php
-        $counts = ['ทั้งหมด'=>count($requests),'อนุมัติ'=>0,'กำลังดำเนินการ'=>0,'ปฏิเสธ'=>0,'เสร็จสิ้น'=>0];
-        foreach ($requests as $r) { if (isset($counts[$r['status']])) $counts[$r['status']]++; }
-        $statColors = ['ทั้งหมด'=>['#4338ca','#eef2ff'],'อนุมัติ'=>['#b45309','#fffbeb'],'กำลังดำเนินการ'=>['#0369a1','#e0f2fe'],'ปฏิเสธ'=>['#b91c1c','#fef2f2'],'เสร็จสิ้น'=>['#047857','#ecfdf5']];
-        ?>
-        <div class="stats-row">
-            <?php foreach ($counts as $label => $num):
-                [$color,$bg] = $statColors[$label] ?? ['#64748b','#f1f5f9']; ?>
-            <div class="stat-box">
-                <div class="stat-num" style="color:<?= $color ?>"><?= $num ?></div>
-                <div class="stat-label"><?= $label ?></div>
-            </div>
-            <?php endforeach; ?>
-        </div>
-        <?php if ($requests): ?>
-            <?php foreach ($requests as $r):
+    <!-- Tab: นิสิตในความดูแล -->
+    <div id="tab-students" class="tab-pane">
+        <?php if ($students): ?>
+            <?php foreach ($students as $r):
                 $sc = $statusMap[$r['status']] ?? ['class'=>'status-9','icon'=>'fa-question-circle']; ?>
             <div class="req-card">
                 <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
                     <div>
-                        <div class="req-company"><i class="far fa-building me-1 text-muted"></i><?= htmlspecialchars($r['companyname'] ?? '-') ?></div>
-                        <div class="req-position"><?= htmlspecialchars($r['company_position'] ?? '') ?><?= $r['internship_type'] ? ' · '.$r['internship_type'] : '' ?></div>
-                        <div class="req-meta">
-                            <?php if ($r['start_date']): ?>
-                            <span><i class="fas fa-calendar-alt"></i><?= date('d/m/Y', strtotime($r['start_date'])) ?> — <?= $r['end_date'] ? date('d/m/Y', strtotime($r['end_date'])) : '?' ?></span>
-                            <?php endif; ?>
-                            <?php if (!empty($r['tchname'])): ?>
-                            <span><i class="fas fa-chalkboard-teacher"></i><?= htmlspecialchars($r['tchname']) ?></span>
-                            <?php endif; ?>
+                        <div style="font-weight:600; margin-bottom:0.2rem;">
+                            <i class="fas fa-user-graduate me-1 text-muted"></i>
+                            <?= htmlspecialchars($r['stdname'] ?? '-') ?>
+                            <span style="font-size:0.8rem; color:var(--muted); font-weight:400;"> · <?= htmlspecialchars($r['stdid']) ?></span>
+                        </div>
+                        <div style="font-size:0.85rem; color:var(--muted); margin-bottom:0.5rem;">
+                            <i class="far fa-building me-1"></i><?= htmlspecialchars($r['companyname'] ?? '-') ?>
+                        </div>
+                        <div style="font-size:0.82rem; color:var(--muted);">
+                            <i class="fas fa-envelope me-1" style="color:var(--swu-red)"></i><?= htmlspecialchars($r['student_email'] ?? '-') ?>
                         </div>
                     </div>
-                    <span class="status-badge <?= $sc['class'] ?>"><i class="fas <?= $sc['icon'] ?>"></i><?= htmlspecialchars($r['status']) ?></span>
+                    <span class="status-badge <?= $sc['class'] ?>">
+                        <i class="fas <?= $sc['icon'] ?>"></i><?= htmlspecialchars($r['status']) ?>
+                    </span>
                 </div>
             </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <div class="empty-box"><i class="fas fa-folder-open"></i>ยังไม่มีประวัติการยื่นคำขอฝึกงาน</div>
+            <div class="empty-box"><i class="fas fa-users"></i>ยังไม่มีนิสิตในความดูแล</div>
         <?php endif; ?>
     </div>
 
@@ -230,15 +209,15 @@ $statusMap = [
             <?= $msg ?>
             <form method="POST">
                 <div class="mb-3">
-                    <label class="form-label fw-500">รหัสผ่านปัจจุบัน</label>
+                    <label class="form-label">รหัสผ่านปัจจุบัน</label>
                     <input type="password" name="old_pass" class="form-control" placeholder="กรอกรหัสผ่านปัจจุบัน" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-500">รหัสผ่านใหม่</label>
+                    <label class="form-label">รหัสผ่านใหม่</label>
                     <input type="password" name="new_pass" class="form-control" placeholder="กรอกรหัสผ่านใหม่" required>
                 </div>
                 <div class="mb-4">
-                    <label class="form-label fw-500">ยืนยันรหัสผ่านใหม่</label>
+                    <label class="form-label">ยืนยันรหัสผ่านใหม่</label>
                     <input type="password" name="confirm_pass" class="form-control" placeholder="กรอกรหัสผ่านใหม่อีกครั้ง" required>
                 </div>
                 <button type="submit" name="change_password" class="btn btn-swu">
@@ -258,7 +237,6 @@ $statusMap = [
         document.getElementById('tab-' + id).classList.add('active');
         btn.classList.add('active');
     }
-    // เปิด tab เปลี่ยนรหัสผ่านอัตโนมัติถ้ามี message
     <?php if ($msg): ?>
     switchTab('password', document.querySelectorAll('.hero-tab')[2]);
     <?php endif; ?>

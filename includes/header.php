@@ -166,16 +166,18 @@ $role_label = [
                         <ul class="dropdown-content">
                             <li><a href="/SWUIS/form.php">ยื่นเรื่องฝึกงาน</a></li>
                             <li><a href="/SWUIS/pages/admin/student_list.php">ติดตามสถานะ</a></li>
-                            <li><a href="/SWUIS/pages/student/student_profile.php">ข้อมูลของฉัน</a></li>
+                            <li><a href="/SWUIS/pages/student/student_profile.php">ข้อมูลส่วนตัว</a></li>
                         </ul>
                     </li>
                 <?php elseif ($role === 'teacher'): ?>
                     <li><a href="/SWUIS/pages/teacher/T_dashboard.php">คำร้องขอฝึกงาน</a></li>
                     <li><a href="/SWUIS/pages/teacher/teacher_students.php">ข้อมูลนิสิต</a></li>
+                    <li><a href="/SWUIS/pages/teacher/teacher_profile.php">ข้อมูลส่วนตัว</a></li>
                 <?php elseif ($role === 'admin'): ?>
                     <li><a href="/SWUIS/Internship.php">การฝึกงาน</a></li>
                     <li><a href="/SWUIS/pages/admin/staff_dashboard.php">ระบบจัดการ</a></li>
                     <li><a href="/SWUIS/pages/admin/add_user.php">จัดการบัญชี</a></li>
+                    <li><a href="/SWUIS/pages/admin/admin_profile.php">ข้อมูลส่วนตัว</a></li>
                 <?php endif; ?>
                 <li><a href="/SWUIS/ourteam.php"><i class="fa-solid fa-circle-user"></i></a></li>
             </ul>
@@ -212,14 +214,16 @@ $role_label = [
         <a href="/SWUIS/Internship.php">การฝึกงานและสหกิจศึกษา</a>
         <a href="/SWUIS/form.php" class="mobile-sub">↳ ยื่นเรื่องฝึกงาน</a>
         <a href="/SWUIS/pages/admin/student_list.php" class="mobile-sub">↳ ติดตามสถานะ</a>
-        <a href="/SWUIS/pages/student/student_profile.php" class="mobile-sub">↳ ข้อมูลของฉัน</a>
+        <a href="/SWUIS/pages/student/student_profile.php" class="mobile-sub">↳ ข้อมูลส่วนตัว</a>
     <?php elseif ($role === 'teacher'): ?>
-        <a href="/SWUIS/pages/teacher/T_dashboard.php">Teacher Dashboard</a>
+        <a href="/SWUIS/pages/teacher/T_dashboard.php">คำร้องขอฝึกงาน</a>
         <a href="/SWUIS/pages/teacher/teacher_students.php">ข้อมูลนิสิต</a>
+        <a href="/SWUIS/pages/teacher/teacher_profile.php">ข้อมูลส่วนตัว</a>
     <?php elseif ($role === 'admin'): ?>
         <a href="/SWUIS/Internship.php">การฝึกงาน</a>
-        <a href="/SWUIS/pages/admin/staff_dashboard.php">Staff Dashboard</a>
+        <a href="/SWUIS/pages/admin/staff_dashboard.php">ระบบจัดการ</a>
         <a href="/SWUIS/pages/admin/add_user.php">จัดการบัญชีผู้ใช้</a>
+        <a href="/SWUIS/pages/admin/admin_profile.php">ข้อมูลส่วนตัว</a>
     <?php endif; ?>
     <a href="/SWUIS/ourteam.php">คณะผู้จัดทำ</a>
     <div class="mobile-login">
