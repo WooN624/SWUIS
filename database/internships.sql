@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2026 at 04:22 PM
+-- Generation Time: Apr 28, 2026 at 07:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -82,8 +82,10 @@ INSERT INTO `internship_request` (`requestid`, `stdid`, `companyid`, `company_po
 ('', '67101010367', NULL, 'นักจดหมายเหตุ', NULL, 'คุณศิริ ดีงาม', '02-700-7007', NULL, '2026-05-20', '2026-09-18', 'ฝึกงานรายวิชา', 3, 'หลักสูตรวิทยาศาสตรบัณฑิต สาขาวิชาสารสนเทศศึกษา', 'เสร็จสิ้น', NULL),
 ('1937465028', '67101010588', '0105545020976', 'นักพัฒนาแอปพลิเคชัน', NULL, 'คุณกมล สุขใจ', '02-600-6006', '3 เดือน', '2026-05-01', '2026-07-31', 'สหกิจศึกษา', 4, 'สารสนเทศศึกษา', 'อนุมัติ', '125'),
 ('2847591036', '67101010402', '0105533030645', 'ผู้ช่วย IT Support', NULL, 'คุณมานะ ใฝ่รู้', '02-800-8008', '5 เดือน', '2026-05-01', '2026-09-30', 'สหกิจศึกษา', 4, 'สารสนเทศศึกษา', 'กำลังดำเนินการ', '127'),
+('3581886032', '67101010634', NULL, 'คนผลิตชีส', 'ทอมแอนด์เจอรรี่', 'คุณนายเจ้าบ้าน', '055-555-1212', NULL, '2026-04-30', '2026-05-22', 'ฝึกงานรายวิชา', 2, 'หลักสูตรวิทยาศาสตรบัณฑิต สาขาวิชาสารสนเทศศึกษา', 'กำลังดำเนินการ', NULL),
 ('3629184750', '67101010487', '0105473000036', 'ผู้ช่วยบรรณารักษ์', NULL, 'คุณนภา สวัสดี', '02-300-3003', '4 เดือน', '2026-06-01', '2026-09-30', 'ฝึกงานรายวิชา', 3, 'สารสนเทศศึกษา', 'ปฏิเสธ', '124'),
 ('4759201836', '67101010398', '0105534078773', 'นักจัดการข้อมูล', NULL, 'คุณพรรณี ตั้งใจ', '02-200-2002', '4 เดือน', '2026-05-01', '2026-08-31', 'สหกิจศึกษา', 4, 'สารสนเทศศึกษา', 'อนุมัติ', '124'),
+('5488060367', '67101010639', NULL, 'คนผลิตชีส', 'ทอมแอนด์เจอรรี่', 'คุณหญิง', '055-555-1212', NULL, '2026-04-30', '2027-04-17', 'ฝึกตามความต้องการนอกหลักสูตร', 2, 'หลักสูตรวิทยาศาสตรบัณฑิต สาขาวิชาสารสนเทศศึกษา', 'กำลังดำเนินการ', NULL),
 ('5618293740', '67101010355', '0105532053773', 'นักพัฒนาระบบ', NULL, 'คุณชาญ ฉลาดดี', '02-236-7227', '6 เดือน', '2026-05-15', '2026-11-15', 'สหกิจศึกษา', 4, 'สารสนเทศศึกษา', 'กำลังดำเนินการ', '129'),
 ('5839201746', '67101010312', '0107546000156', 'นักพัฒนาซอฟต์แวร์', NULL, 'คุณสมชาย ใจดี', '02-821-7999', '4 เดือน', '2026-05-01', '2026-08-31', 'ฝึกงานรายวิชา', 4, 'สารสนเทศศึกษา', 'กำลังดำเนินการ', '123'),
 ('6502918473', '67101010367', '0105538124621', 'นักจดหมายเหตุ', NULL, 'คุณศิริ ดีงาม', '02-700-7007', '4 เดือน', '2026-06-01', '2026-09-30', 'ฝึกงานรายวิชา', 3, 'สารสนเทศศึกษา', 'ปฏิเสธ', '126'),
@@ -104,18 +106,19 @@ CREATE TABLE `staff` (
   `staffname` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `tchID` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+  `tchID` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `password` varchar(255) DEFAULT '1234'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`staffid`, `staffname`, `email`, `phone`, `tchID`) VALUES
-('STF001', 'อนุชา แสงทอง', 'anucha.staff@gmail.com', '0819257346', '123'),
-('STF002', 'ศิริพร พูนสุข', 'siriporn.staff@gmail.com', '0956824137', '124'),
-('STF003', 'วิทยา จันทร์ดี', 'witthaya.staff@gmail.com', '0893175624', '124'),
-('STF004', 'กัญญา วงศ์ดี', 'kanya.staff@gmail.com', '0937461825', '124');
+INSERT INTO `staff` (`staffid`, `staffname`, `email`, `phone`, `tchID`, `password`) VALUES
+('STF001', 'อนุชา แสงทอง', 'anucha.staff@gmail.com', '0819257346', '123', '1234'),
+('STF002', 'ศิริพร พูนสุข', 'siriporn.staff@gmail.com', '0956824137', '124', '1234'),
+('STF003', 'วิทยา จันทร์ดี', 'witthaya.staff@gmail.com', '0893175624', '124', '1234'),
+('STF004', 'กัญญา วงศ์ดี', 'kanya.staff@gmail.com', '0937461825', '124', '1234');
 
 -- --------------------------------------------------------
 
@@ -164,28 +167,28 @@ CREATE TABLE `student` (
   `stdid` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `stdname` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+  `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `password` varchar(255) DEFAULT '1234'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`stdid`, `stdname`, `email`, `phone`) VALUES
-('67101010312', 'กิตติพงศ์ ศรีสุข', 'kittipong.s@g.swu.ac.th', '0865291743'),
-('67101010355', 'อิทธิพล แก้วทอง', 'ittipol.k@g.swu.ac.th', '0962718453'),
-('67101010367', 'วราภรณ์ ศรีคำ', 'waraporn.s@g.swu.ac.th', '0836492751'),
-('67101010398', 'ณัฐธิดา บุญมี', 'nattida.b@g.swu.ac.th', '0918473620'),
-('67101010402', 'นพดล ศรีวิชัย', 'nopadon.s@g.swu.ac.th', '0873129645'),
-('67101010445', 'ปวีณา ทองดี', 'paveena.t@g.swu.ac.th', '0895627138'),
-('67101010487', 'พิมพ์ชนก วัฒนะ', 'pimchanok.w@g.swu.ac.th', '0941836205'),
-('67101010521', 'ธนกฤต จันทรา', 'thanakrit.c@g.swu.ac.th', '0827619534'),
-('67101010574', 'ชลธิชา ใจดี', 'chonticha.j@g.swu.ac.th', '0928451736'),
-('67101010588', 'ศุภชัย อินทร์แก้ว', 'supachai.i@g.swu.ac.th', '0951738246'),
-('67101010626', 'ธนัญญา กรรพฤทธิ์', 'tnyeiei@g.swu.ac.th', '0863193124'),
-('67101010627', 'ธันย์ชนก สัตนาโค', 'thanchanok.sattanako@g.swu.a.th', '0829637051'),
-('67101010634', 'พรนภัส เจียมโฆสิต', 'pornnapat.row@g.swu.ac.th', '0881410917'),
-('67101010639', 'แพรวทอง พรมมา', 'paewthong.phormma@g.swu.ac.th', '01234567890');
+INSERT INTO `student` (`stdid`, `stdname`, `email`, `phone`, `password`) VALUES
+('67101010312', 'กิตติพงศ์ ศรีสุข', 'kittipong.s@g.swu.ac.th', '0865291743', '1234'),
+('67101010355', 'อิทธิพล แก้วทอง', 'ittipol.k@g.swu.ac.th', '0962718453', '1234'),
+('67101010367', 'วราภรณ์ ศรีคำ', 'waraporn.s@g.swu.ac.th', '0836492751', '1234'),
+('67101010398', 'ณัฐธิดา บุญมี', 'nattida.b@g.swu.ac.th', '0918473620', '1234'),
+('67101010402', 'นพดล ศรีวิชัย', 'nopadon.s@g.swu.ac.th', '0873129645', '1234'),
+('67101010445', 'ปวีณา ทองดี', 'paveena.t@g.swu.ac.th', '0895627138', '1234'),
+('67101010487', 'พิมพ์ชนก วัฒนะ', 'pimchanok.w@g.swu.ac.th', '0941836205', '1234'),
+('67101010521', 'ธนกฤต จันทรา', 'thanakrit.c@g.swu.ac.th', '0827619534', '1234'),
+('67101010574', 'ชลธิชา ใจดี', 'chonticha.j@g.swu.ac.th', '0928451736', '1234'),
+('67101010588', 'ศุภชัย อินทร์แก้ว', 'supachai.i@g.swu.ac.th', '0951738246', '1234'),
+('67101010626', 'ธนัญญา กรรพฤทธิ์', 'tnyeiei@g.swu.ac.th', '0863193124', '1234'),
+('67101010634', 'พรนภัส เจียมโฆสิต', 'pornnapat.row@g.swu.ac.th', '0881410917', '$2y$10$HC0.oJ72CEDnVVxYjzzFO.lxMu87EZmXruiOVZCe0NFiwwh898Phu'),
+('67101010639', 'แพรวทอง พรมมา', 'paewthong.phormma@g.swu.ac.th', '01234567890', '$2y$10$lSVhxyT31/SxwCqhvpql7OJerRH3BDcEG0buux5woN9GizAQcFD7S');
 
 -- --------------------------------------------------------
 
@@ -197,22 +200,23 @@ CREATE TABLE `teacher` (
   `tchID` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `tchname` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+  `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `password` varchar(255) DEFAULT '1234'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `teacher`
 --
 
-INSERT INTO `teacher` (`tchID`, `tchname`, `email`, `phone`) VALUES
-('123', 'อาจารย์ ดร. ดิษฐ์ สุทธิวงศ์', 'dit@g.swu.ac.th', '0815550581'),
-('124', 'อาจารย์ ดร. ฐิติ อติชาติชยากร', 'thitik@g.swu.ac.th', '026495000'),
-('125', 'ผู้ช่วยศาสตราจารย์ ดร. วิภากร วัฒนสินธุ์', 'vipakorn@g.swu.ac.th', '026495000'),
-('126', 'อาจารย์ ดร. โชคธำรงค์ จงจอหอ', 'chokthamrong@g.swu.ac.th', '026495000'),
-('127', 'อาจารย์โชติมา วัฒนะ', 'chotimaw@g.swu.ac.th', NULL),
-('128', 'ผู้ช่วยศาสตราจารย์ ดร. ดุษฎี สีวังคำ', 'dussadee@g.swu.ac.th', '026495000'),
-('129', 'ผู้ช่วยศาสตราจารย์ ดร. ศศิพิมล ประพินพงศกร', 'sasipimol@g.swu.ac.th', NULL),
-('130', 'อาจารย์ ดร. ศุมรรษตรา แสนวา', 'sumattra@g.swu.ac.th', '0856179617');
+INSERT INTO `teacher` (`tchID`, `tchname`, `email`, `phone`, `password`) VALUES
+('123', 'อาจารย์ ดร. ดิษฐ์ สุทธิวงศ์', 'dit@g.swu.ac.th', '0815550581', '1234'),
+('124', 'อาจารย์ ดร. ฐิติ อติชาติชยากร', 'thitik@g.swu.ac.th', '026495000', '1234'),
+('125', 'ผู้ช่วยศาสตราจารย์ ดร. วิภากร วัฒนสินธุ์', 'vipakorn@g.swu.ac.th', '026495000', '1234'),
+('126', 'อาจารย์ ดร. โชคธำรงค์ จงจอหอ', 'chokthamrong@g.swu.ac.th', '026495000', '1234'),
+('127', 'อาจารย์โชติมา วัฒนะ', 'chotimaw@g.swu.ac.th', NULL, '1234'),
+('128', 'ผู้ช่วยศาสตราจารย์ ดร. ดุษฎี สีวังคำ', 'dussadee@g.swu.ac.th', '026495000', '1234'),
+('129', 'ผู้ช่วยศาสตราจารย์ ดร. ศศิพิมล ประพินพงศกร', 'sasipimol@g.swu.ac.th', NULL, '1234'),
+('130', 'อาจารย์ ดร. ศุมรรษตรา แสนวา', 'sumattra@g.swu.ac.th', '0856179617', '1234');
 
 --
 -- Indexes for dumped tables
