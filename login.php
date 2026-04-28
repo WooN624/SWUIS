@@ -223,7 +223,7 @@ $error = isset($_GET['error']);
 
             <div class="demo-hint">
                 <strong>🔑 สำหรับรหัสผ่าน:</strong><br>
-                ใช้อีเมลทั้งตรง Username และ Password </span><br>
+                ใช้อีเมลทั้งตรง Username และค่าเริ่มต้น Password คือ 1234 </span><br>
             </div>
         </div>
     </div>
